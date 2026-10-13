@@ -36,6 +36,7 @@ const renames: Record<string, string> = {
   "omdsh-dev/dsh-at-file": "FSMargoo/dsh-at-file",
   "omdsh-dev/fabric": "omdsh-dev/stent",
   "openma-ai/deepseek-harness-tui": "openma-ai/Martty",
+  "SuperWheel/cliworker-now": "SuperWheel/dsh-cliworker-now",
   "Tabbit-Browser/dsh-plugin": "Tabbit-Browser/dsh-tabbit",
   "titanwings/colleague-skill": "titanwings/distilly",
   "vibeinging/deepseek-harness-desktop-app": "vibeinging/dsh-desktop",

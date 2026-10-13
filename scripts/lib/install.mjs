@@ -1,4 +1,5 @@
 import semver from "semver";
+import { renamedTo } from "../../src/lib/plugin-renames.ts";
 
 /**
  * 安装方式推导：从仓库根 package.json + npm registry 的事实，推出「这东西到底怎么装」。
@@ -179,7 +180,18 @@ export function normalizeNpmRepository(repository) {
  */
 export function npmRepoBacklink(fullName, repository) {
   if (typeof fullName !== "string") return false;
-  return normalizeNpmRepository(repository) === fullName.toLowerCase();
+  const declared = normalizeNpmRepository(repository);
+  if (!declared) return false;
+  // Published npm tarballs keep their historical repository URL after a rename.
+  // This opt-in is limited to the verified cliworker migration. Other aliases
+  // retain the exact backlink policy until separately reviewed.
+  const canonical = (name) => {
+    const normalized = name.toLowerCase();
+    return normalized === "superwheel/cliworker-now"
+      ? (renamedTo(normalized) ?? normalized).toLowerCase()
+      : normalized;
+  };
+  return canonical(declared) === canonical(fullName);
 }
 
 // ---------- 取数结论：分清「确认没有」与「这轮说不准」 ----------

@@ -332,6 +332,19 @@ test("npmRepoBacklink compares case-insensitively against the GitHub full name",
   assert.equal(npmRepoBacklink(FULL_NAME, undefined), false);
 });
 
+test("npmRepoBacklink accepts the verified cliworker rename without admitting unknown aliases", () => {
+  const oldName = "SuperWheel/cliworker-now";
+  const newName = "SuperWheel/dsh-cliworker-now";
+  assert.equal(npmRepoBacklink(newName, `git+https://github.com/${oldName}.git`), true);
+  assert.equal(npmRepoBacklink(oldName, `https://github.com/${newName.toLowerCase()}`), true);
+  assert.equal(npmRepoBacklink(newName, "https://github.com/Other/cliworker-now"), false);
+  assert.equal(npmRepoBacklink("SuperWheel/unverified-name", `https://github.com/${oldName}`), false);
+  assert.equal(
+    npmRepoBacklink("anywhere-labs/dsh-desktop", "https://github.com/anywhere-labs/deepseek-harness-desktop"),
+    false,
+  );
+});
+
 // ---------- catalogSubdirectory / npmRepoSubdirectory ----------
 
 test("catalogSubdirectory 镜像桌面端 normalizeSubdirectory：合规原样返回", () => {
